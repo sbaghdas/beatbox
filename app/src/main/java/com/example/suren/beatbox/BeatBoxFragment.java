@@ -10,7 +10,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import java.util.List;
+
 public class BeatBoxFragment extends Fragment {
+    private BeatBox mBeatBox;
 
     @Nullable
     @Override
@@ -20,20 +23,33 @@ public class BeatBoxFragment extends Fragment {
         RecyclerView recyclerView = (RecyclerView)view.
                 findViewById(R.id.fragment_beat_box_recycler_view);
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 3));
-        recyclerView.setAdapter(new SoundAdapter());
+        mBeatBox = new BeatBox(getActivity());
+        mBeatBox.loadSounds();
+        recyclerView.setAdapter(new SoundAdapter(mBeatBox.getSounds()));
         return view;
     }
 
     private class SoundHolder extends RecyclerView.ViewHolder {
         private Button mButton;
+        private Sound mSound;
 
         public SoundHolder(View itemView) {
             super(itemView);
             mButton = (Button)itemView.findViewById(R.id.sound_button);
         }
+
+        public void bindSound(Sound sound) {
+            mSound = sound;
+            mButton.setText(sound.getName());
+        }
     }
 
     private class SoundAdapter extends RecyclerView.Adapter<SoundHolder> {
+        private List<Sound> mSounds;
+
+        public SoundAdapter(List<Sound> sounds){
+            mSounds = sounds;
+        }
 
         @Override
         public SoundHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -44,12 +60,12 @@ public class BeatBoxFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(SoundHolder holder, int position) {
-
+            holder.bindSound(mSounds.get(position));
         }
 
         @Override
         public int getItemCount() {
-            return 0;
+            return mSounds.size();
         }
     }
 }
