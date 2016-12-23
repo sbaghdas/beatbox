@@ -7,6 +7,7 @@ package com.example.suren.beatbox;
 public class Sound {
     private String mName;
     private String mPath;
+    private Integer mId;
 
     public Sound(String path) {
         mPath = path;
@@ -21,5 +22,13 @@ public class Sound {
 
     public String getPath() {
         return mPath;
+    }
+
+    public Integer getId() {
+        return mId;
+    }
+
+    public void setId(Integer id) {
+        mId = id;
     }
 }
