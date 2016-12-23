@@ -15,6 +15,16 @@ import java.util.List;
 public class BeatBoxFragment extends Fragment {
     private BeatBox mBeatBox;
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // retain this fragment to keep sound playing during rotation
+        setRetainInstance(true);
+        // move here because unlike onCreateView it is not called after rotation
+        mBeatBox = new BeatBox(getActivity());
+        mBeatBox.loadSounds();
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
@@ -23,8 +33,6 @@ public class BeatBoxFragment extends Fragment {
         RecyclerView recyclerView = (RecyclerView)view.
                 findViewById(R.id.fragment_beat_box_recycler_view);
         recyclerView.setLayoutManager(new GridLayoutManager(getActivity(), 3));
-        mBeatBox = new BeatBox(getActivity());
-        mBeatBox.loadSounds();
         recyclerView.setAdapter(new SoundAdapter(mBeatBox.getSounds()));
         return view;
     }
